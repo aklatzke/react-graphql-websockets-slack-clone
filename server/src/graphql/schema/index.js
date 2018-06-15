@@ -19,6 +19,16 @@ const query = new GraphQLObjectType({
           type: GraphQLList(channelType),
           resolve: () => resolvers.channels.findAll()
         },
+
+        currentUser: {
+            type: userType,
+            args: {
+                email: {
+                    type: GraphQLString
+                }
+            },
+            resolve: (root, {email}) => resolvers.users.getUser(email)
+        }
     })
 })
 
@@ -39,6 +49,7 @@ const mutations = new GraphQLObjectType({
         },
 
         addUser : {
+            type: userType,
             args: {
                 displayName: {
                     type: GraphQLString
