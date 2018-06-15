@@ -1,0 +1,23 @@
+.chat-input-container{
+    width: 100%;
+    clear: both;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.chat-input-container.row{
+    margin-bottom: 0px;
+}
+
+.chat-input-container button{
+    position: relative;
+    top: 9px;
+}
+
+.chat-input-container input{
+    box-sizing: border-box !important;
+    padding-left: 40px !important;
+    margin-bottom: 1px !important;
+}
