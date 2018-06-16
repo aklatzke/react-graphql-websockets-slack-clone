@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "npm-watch",
-    "build": "cd public && npm run build && cd .. && rm -rf server/public && mv public/build server/public"
+    "build": "cd public && npm run build && cd .. && rm -rf server/public && cp -R public/build server/public"
   },
   "author": "",
   "license": "ISC",

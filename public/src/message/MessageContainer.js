@@ -64,15 +64,17 @@ export default class MessageContainer extends Component{
     }
 
     updateMessage = (e) => {
+        console.log(e.target.value)
         this.setState({
             chat: e.target.value
         })
     }
 
     maybeRenderChannel = () => {
+        console.log(this.props)
         if( this.props.currentChannel ){
             return [
-                <ChannelMessages channel={ this.state.channelData } activeUid={ this.props.user._id }/>, 
+                <ChannelMessages channel={ this.state.channelData } activeUid={ this.props.user._id } updateUser={ this.props.updateUser }/>, 
                 <ChatField value={ this.state.chat } addMessage={ this.addMessageToChannel } updateMessage={ this.updateMessage }/>
             ]
         }

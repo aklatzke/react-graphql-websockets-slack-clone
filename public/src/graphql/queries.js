@@ -10,7 +10,7 @@ export const INTIIAL_CHANNEL_QUERY = gql`
     }
 `;
 
-export const CHANNEL_INSERT_MUTATION = gql `
+export const CHANNEL_INSERT_MUTATION = gql`
     mutation addChannel( $name: String!, $type: String! ){
         addChannel( name: $name, type: $type ){
             name,
@@ -20,7 +20,17 @@ export const CHANNEL_INSERT_MUTATION = gql `
     }
 `;
 
-export const CHANNEL_SUBSCRIPTION = gql `
+export const CHANNEL_ADD_MUTATION = gql`
+    mutation subscribeToChannel( $channelId: String!, $userId: String! ){
+        subscribeToChannel( channelId: $channelId, userId: $userId ){
+            name,
+            type,
+            _id
+        }
+    }
+`; 
+
+export const CHANNEL_SUBSCRIPTION = gql`
     subscription newChannel{
         newChannel{
             name,
@@ -30,7 +40,7 @@ export const CHANNEL_SUBSCRIPTION = gql `
     }
 `;
 
-export const SINGLE_CHANNEL_QUERY = gql `
+export const SINGLE_CHANNEL_QUERY = gql`
     query singleChannel( $id: String! ){
         singleChannel(id: $id){
             _id,
@@ -49,7 +59,7 @@ export const SINGLE_CHANNEL_QUERY = gql `
     }
 `;
 
-export const ADD_MESSAGE_MUTATION = gql `
+export const ADD_MESSAGE_MUTATION = gql`
     mutation addMessage( $content: String!, $author: String!, $channel: String! ){
         addMessage( content: $content, author: $author, channel: $channel ){
             _id,
@@ -65,7 +75,7 @@ export const ADD_MESSAGE_MUTATION = gql `
     }
 `;
 
-export const MESSAGE_ADDED_SUBSCRIPTION = gql `
+export const MESSAGE_ADDED_SUBSCRIPTION = gql`
     subscription newComment( $channelId: String! ){
         newComment( channelId: $channelId ){
             _id,

@@ -9,22 +9,48 @@ export default (db) => ({
         emailVerified, 
         photoURL, 
         uid
-    }) => db.user.update({email}, {displayName, email, emailVerified, photoURL, uid}, { upsert: true })
-            .then((err, data) => {
-                pubsub.publish(actions.USER_TOPIC, {
-                    newUser: { ...data}
+    }) => {
+        return db.user.findOne({email})
+                .then((data) => {
+                    if( data._id ){
+                        return data;
+                    }
+                    else{
+                        db.user.insert({
+                          displayName,
+                          email,
+                          emailVerified,
+                          photoURL,
+                          uid
+                        }).then( (data) => {
+                            pubsub.publish(actions.USER_TOPIC, {
+                                newUser: { ...data }
+                            })
+                            return data;
+                        })
+                    }
                 })
+    },
 
-                return data;
-            }),
+    getUser : (email) => db.user.findOne({ email: email }).then(data => {
+        if( ! data.channels )
+            data.channels = []
 
-    getUser : (email) => db.user.findOne({ email: email }),
+        return db.channel.find({
+            _id : {
+                $in: data.channels.map( str => db.ObjectId(str) )
+            }
+        }).then(response => {
+            data.channels = response;
+            return data;
+        })
+    }),
 
     addChannel: ({ userId, channelId }) => db.user.update( { _id: db.ObjectId(userId) }, {
-        channel: {
-            $push: channelId
+        $addToSet : {
+            channels: channelId
         }
-    } ).then( data => {
-        console.log(data)
+    } ).then( () => {
+        return {}
     } )
 })

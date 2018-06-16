@@ -75,6 +75,7 @@ export default class ChannelContainer extends Component{
     }
 
     render(){
+        console.log(this.props)
         return (
             <div className='channel-container'>
                 <br/>
@@ -87,10 +88,23 @@ export default class ChannelContainer extends Component{
                     showChannelAdd={ this.state.showChannelAdd }
                     
                 />
-                <ChannelList 
-                    channels={ this.state.channels } 
-                    selectChannel={ this.props.selectChannel }
-                />
+                { this.props.user.channels ? 
+                    <ChannelList 
+                        channels={ this.props.user.channels } 
+                        selectChannel={ this.props.selectChannel }
+                        label={ "Your Channels" }
+                    /> :
+                    ''
+                }
+                { this.state.channels ? 
+                    <ChannelList 
+                        channels={ this.state.channels } 
+                        selectChannel={ this.props.selectChannel }
+                        label={ "All Channels" }
+                    /> :
+                    ''
+                }                
+
             </div>
         )
     }

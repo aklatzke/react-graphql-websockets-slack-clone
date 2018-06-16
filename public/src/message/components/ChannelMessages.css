@@ -13,4 +13,5 @@
 .channel-messages{
     max-height: 90%;
     overflow: auto;
+    padding-bottom: 60px;
 }

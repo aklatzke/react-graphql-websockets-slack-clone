@@ -5,6 +5,7 @@ import MessageContainer from './message/MessageContainer';
 import ChannelContainer from './channel/ChannelContainer';
 
 import { client, gql } from './graphql';
+import { CHANNEL_ADD_MUTATION } from './graphql/queries';
 
 const firebase = window.firebase;
 
@@ -15,7 +16,12 @@ const USER_INSERT_MUTATION = gql`
       email,
       emailVerified,
       photoURL,
-      uid
+      uid,
+      channels{
+        _id,
+        name,
+        type
+      }
     }
   }
 `;
@@ -28,7 +34,12 @@ const GET_ACTIVE_USER = gql`
       email,
       emailVerified,
       photoURL,
-      uid
+      uid,
+      channels{
+        _id,
+        name,
+        type
+      }
     }
   }
 `;
@@ -53,7 +64,7 @@ class App extends Component {
           photoURL,
           uid
         } = user;
-        
+
         client.mutate({
             mutation: USER_INSERT_MUTATION,
             variables: { displayName, email, emailVerified, photoURL, uid }
@@ -64,6 +75,7 @@ class App extends Component {
               variables: { email }
             })
             .then(data => {
+              console.log(data)
               this.setState({
                 user: data.data.currentUser
               })
@@ -75,6 +87,31 @@ class App extends Component {
     });
   }
 
+  updateUser = ( key, value ) => {
+    let newUser = this.state.user;
+
+    if( key === "channels" ){
+      newUser.channels = [...newUser.channels, value].reduce( (carry, next) => {
+        if (!carry.some(item => item._id === next._id))
+          carry.push(next);
+      
+        return carry;
+      }, [])
+
+      client.mutate({
+        mutation: CHANNEL_ADD_MUTATION,
+        variables: {
+          channelId: value._id,
+          userId: this.state.user._id
+        }
+      })
+    }
+
+    this.setState({
+      user: newUser
+    })
+  }
+
   selectChannel = ( channelId ) => {
     this.setState({
       activeChannel: channelId
@@ -84,8 +121,8 @@ class App extends Component {
   render() { 
     return (
       <div className="App">
-        <ChannelContainer selectChannel={ this.selectChannel } />
-        <MessageContainer currentChannel={ this.state.activeChannel } user={ this.state.user }/>
+        <ChannelContainer selectChannel={ this.selectChannel } user={ this.state.user } />
+        <MessageContainer currentChannel={ this.state.activeChannel } user={ this.state.user } updateUser={ this.updateUser }/>
       </div> 
     );
   }
