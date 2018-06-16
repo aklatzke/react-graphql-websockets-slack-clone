@@ -36,7 +36,8 @@ const GET_ACTIVE_USER = gql`
 class App extends Component {
   state = {
     channelId : "",
-    user: {}
+    user: {},
+    activeChannel: ""
   }
 
   componentDidMount(){
@@ -64,7 +65,7 @@ class App extends Component {
             })
             .then(data => {
               this.setState({
-                user: data.data
+                user: data.data.currentUser
               })
             })
         })
@@ -75,14 +76,16 @@ class App extends Component {
   }
 
   selectChannel = ( channelId ) => {
-    console.log(channelId)
+    this.setState({
+      activeChannel: channelId
+    })
   }
 
   render() { 
     return (
       <div className="App">
-        <ChannelContainer selectChannel={ this.selectChannel }/>
-        <MessageContainer />
+        <ChannelContainer selectChannel={ this.selectChannel } />
+        <MessageContainer currentChannel={ this.state.activeChannel } user={ this.state.user }/>
       </div> 
     );
   }

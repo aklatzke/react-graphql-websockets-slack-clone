@@ -2,39 +2,14 @@ import React, {Component} from 'react';
 import './ChannelContainer.css';
 
 import { gql, client } from '../graphql';
+import { 
+    INTIIAL_CHANNEL_QUERY,
+    CHANNEL_INSERT_MUTATION,
+    CHANNEL_SUBSCRIPTION
+} from '../graphql/queries';
 
 import ChannelList from './components/ChannelList';
 import AddChannel from './components/Add';
-
-const CHANNEL_INSERT_MUTATION = gql`
-    mutation addChannel( $name: String!, $type: String! ){
-        addChannel( name: $name, type: $type ){
-            name,
-            type,
-            _id
-        }
-    }
-`;
-
-const CHANNEL_SUBSCRIPTION = gql`
-    subscription newChannel{
-        newChannel{
-            name,
-            type,
-            _id
-        }
-    }
-`;
-
-const INTIIAL_CHANNEL_QUERY = gql`
-    query allChannels{
-        allChannels{
-            name,
-            type,
-            _id
-        }
-    }
-`;
 
 export default class ChannelContainer extends Component{
     state = {
@@ -45,7 +20,6 @@ export default class ChannelContainer extends Component{
     }
 
     componentDidMount(){
-        console.log(this.props)
         // Set up the subscription on the channelList for
         // new channel additions
         client
@@ -54,9 +28,9 @@ export default class ChannelContainer extends Component{
             })
             .subscribe({
                 next: (push) => {
-                    console.log(push.data, push)
                     this.setState({
-                        channels: [...this.state.channels, push.data.newChannel]
+                        channels: [...this.state.channels, push.data.newChannel],
+                        showChannelAdd: false
                     })
                 }
             })

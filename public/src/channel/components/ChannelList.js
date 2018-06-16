@@ -3,7 +3,6 @@ import './ChannelList.css';
 
 export default class ChannelList extends Component{
     render(){
-        console.log(this.props);
         return (
             <ul className='collection with-header'>
                 <li className='collection-header'><h6>Channels</h6></li>

@@ -16,5 +16,12 @@ export default () => ({
             () => pubsub.asyncIterator( actions.USER_TOPIC ),
             () => true
         )
+    },
+
+    newComment: {
+        subscribe: withFilter(
+            () => pubsub.asyncIterator( actions.NEW_COMMENT_TOPIC ),
+            ( payload, variables ) => variables.channelId === payload.newComment.channel
+        )
     }
 })

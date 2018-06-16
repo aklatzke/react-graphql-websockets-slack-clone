@@ -1,0 +1,16 @@
+.channel-messages .author{
+    font-weight: bold;
+}
+
+.channel-messages .collection-item.align-left{
+    text-align: left;
+}
+
+.channel-messages .collection-item.align-right{
+    text-align: right;
+}
+
+.channel-messages{
+    max-height: 90%;
+    overflow: auto;
+}
