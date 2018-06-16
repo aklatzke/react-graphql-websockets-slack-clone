@@ -18,5 +18,13 @@ export default (db) => ({
                 return data;
             }),
 
-    getUser : (email) => db.user.findOne({ email: email }) 
+    getUser : (email) => db.user.findOne({ email: email }),
+
+    addChannel: ({ userId, channelId }) => db.user.update( { _id: db.ObjectId(userId) }, {
+        channel: {
+            $push: channelId
+        }
+    } ).then( data => {
+        console.log(data)
+    } )
 })

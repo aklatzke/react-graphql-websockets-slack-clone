@@ -1,9 +1,11 @@
 import {
   GraphQLObjectType,
   GraphQLString,
-  GraphQLBoolean
+  GraphQLBoolean,
+  GraphQLList
 } from 'graphql';
 
+import channelType from './channel';
 
 export default new GraphQLObjectType({
   name: 'UserType',
@@ -25,6 +27,9 @@ export default new GraphQLObjectType({
     },
     uid: {
       type: GraphQLString
+    },
+    channels: {
+      type: GraphQLList(channelType)
     }
   })
 })

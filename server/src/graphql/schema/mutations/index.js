@@ -62,6 +62,19 @@ export default new GraphQLObjectType({
                 }
             },
             resolve: (root, args) => resolvers.comments.insert(args)
+        },
+
+        subscribeToChannel: {
+            type: GraphQLBoolean,
+            args: {
+                channelId: {
+                    type: GraphQLString
+                },
+                userId: {
+                    type: GraphQLString
+                }
+            },
+            resolve: (root, args) => resolvers.users.addChannel( args )
         }
     })
 })

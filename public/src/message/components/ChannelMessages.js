@@ -19,6 +19,9 @@ export default class ChannelMessages extends Component{
         return (
             <div style={{ height:"100%" }}>
                 <h5 className='channel-title'>{ this.props.channel.name }</h5>
+                <div className="channel-actions row">
+                    <button className='subscribe btn'>Add Channel</button>
+                </div>
                 <ul className='collection channel-messages'>
                     { this.maybeRenderMessages() }
                 </ul>
