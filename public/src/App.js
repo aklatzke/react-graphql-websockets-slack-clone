@@ -41,11 +41,8 @@ class App extends Component {
 
   componentDidMount(){
     let provider = new firebase.auth.GoogleAuthProvider();
-    // Doing primitive things, because firebase behaves like a 
-    // primitive library
-    const _this = this;
 
-    firebase.auth().onAuthStateChanged(function (user) {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
         const {
@@ -66,7 +63,7 @@ class App extends Component {
               variables: { email }
             })
             .then(data => {
-              _this.setState({
+              this.setState({
                 user: data.data
               })
             })
